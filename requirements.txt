@@ -7,3 +7,6 @@ pylint
 
 # Optional: Type checking
 mypy
+
+# PDD 2.0: YAML parsing for build manifest
+PyYAML
