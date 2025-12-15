@@ -13,9 +13,10 @@ If no feature name is provided, lists all available features.
 """
 
 import sys
-import yaml
 from pathlib import Path
 from typing import Dict, List, Optional
+
+import yaml
 
 
 class Syncer:
@@ -178,7 +179,9 @@ class Syncer:
                 prompt_parts.append(f"### {file_path}")
                 if content is None:
                     prompt_parts.append(f"[File does not exist: {file_path}]")
-                    prompt_parts.append("[Note: This specification file needs to be created]")
+                    prompt_parts.append(
+                        "[Note: This specification file needs to be created]"
+                    )
                 else:
                     prompt_parts.append("```")
                     prompt_parts.append(content)

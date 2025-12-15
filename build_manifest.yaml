@@ -12,8 +12,8 @@ features:
   # Example feature definition (template for users to follow)
   example_hello_world_operator:
     description: "Example: Simple hello world operator demonstrating basic functionality"
-    spec_files:
-      # Add specification files here, e.g.:
+    spec_files: []
+      # Add specification files here when creating feature specs, e.g.:
       # - specs/features/hello_world.md
     target_files:
       - addon/__init__.py

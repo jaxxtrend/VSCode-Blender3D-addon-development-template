@@ -13,9 +13,10 @@ If no feature name is provided, lists all available features.
 """
 
 import sys
-import yaml
 from pathlib import Path
 from typing import Dict, List, Optional
+
+import yaml
 
 
 class Builder:
