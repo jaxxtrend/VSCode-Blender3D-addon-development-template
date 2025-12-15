@@ -1,0 +1,31 @@
+# Build Manifest for Prompt-Driven Development (PDD) 2.0
+# This file maps features to their specifications and target source files.
+
+# Global context files that apply to all features
+global_context:
+  - specs/00_system.md
+  - specs/01_arch.md
+
+# Feature definitions
+# Each feature maps to specification files and target source files
+features:
+  # Example feature definition (template for users to follow)
+  example_hello_world_operator:
+    description: "Example: Simple hello world operator demonstrating basic functionality"
+    spec_files: []
+      # Add specification files here when creating feature specs, e.g.:
+      # - specs/features/hello_world.md
+    target_files:
+      - addon/__init__.py
+    status: implemented
+    notes: "This is a template example. Add your own features below."
+
+  # Users should add their own features here following this pattern:
+  # feature_name:
+  #   description: "Brief description of the feature"
+  #   spec_files:
+  #     - specs/features/feature_name.md
+  #   target_files:
+  #     - addon/module_name.py
+  #   status: planned|in_progress|implemented
+  #   notes: "Optional notes about implementation or dependencies"

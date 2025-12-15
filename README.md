@@ -140,11 +140,124 @@ my-blender-addon/
 ├── addon/
 │   ├── __init__.py        # Main add-on file
 │   └── operators.py       # Example operators
+├── specs/                 # PDD 2.0 specifications
+│   ├── 00_system.md       # Global system prompts and rules
+│   └── 01_arch.md         # Architectural context
+├── scripts/               # PDD 2.0 build and sync tools
+│   ├── builder.py         # The Architect - build code from specs
+│   └── syncer.py          # The Fixer - sync specs from code
 ├── .venv/                 # Python virtual environment (created after setup)
-├── .gitignore            # Git ignore rules
-├── requirements.txt      # Python dependencies
-└── README.md            # This file
+├── .gitignore             # Git ignore rules
+├── build_manifest.yaml    # PDD 2.0 feature manifest
+├── requirements.txt       # Python dependencies
+└── README.md              # This file
 ```
+
+## Prompt-Driven Development (PDD) 2.0
+
+This template includes support for Prompt-Driven Development 2.0, a methodology for AI-assisted code generation and specification synchronization.
+
+### What is PDD 2.0?
+
+PDD 2.0 is a development workflow that:
+- Maintains specifications alongside code
+- Uses AI to generate code from specifications (forward workflow)
+- Uses AI to update specifications from code changes (reverse workflow)
+- Ensures consistency between documentation and implementation
+
+### PDD 2.0 Components
+
+#### Specifications (`specs/`)
+- `00_system.md`: Global coding standards and rules
+- `01_arch.md`: Architectural context and design decisions
+- Feature specs: Detailed specifications for specific features (you add these)
+
+#### Build Manifest (`build_manifest.yaml`)
+Maps features to their specifications and target source files. This file tells the PDD tools which files are related to each feature.
+
+#### PDD Tools (`scripts/`)
+
+##### The Architect (`builder.py`)
+Generates AI prompts for building code from specifications.
+
+**Usage:**
+```bash
+# List all available features
+python scripts/builder.py
+
+# Generate prompt for a specific feature
+python scripts/builder.py feature_name > prompt.txt
+```
+
+The generated prompt includes:
+- Global context (coding standards, architecture)
+- Feature specifications
+- Current implementation (if any)
+- Instructions for the AI
+
+##### The Fixer (`syncer.py`)
+Generates AI prompts for updating specifications from code changes.
+
+**Usage:**
+```bash
+# List all available features
+python scripts/syncer.py
+
+# Generate sync prompt for a specific feature
+python scripts/syncer.py feature_name > sync_prompt.txt
+```
+
+The generated prompt includes:
+- Current code implementation (source of truth)
+- Existing specifications (to be updated)
+- Instructions for the AI to sync specs
+
+### Using PDD 2.0 in Your Workflow
+
+#### Forward Workflow: Spec → Code
+
+1. Write a specification in `specs/features/my_feature.md`
+2. Update `build_manifest.yaml` to map your feature to specs and target files
+3. Run `python scripts/builder.py my_feature > prompt.txt`
+4. Process the prompt with your preferred LLM (ChatGPT, Claude, local model, etc.)
+5. Implement the generated code
+6. Test in Blender
+
+#### Reverse Workflow: Code → Spec
+
+1. Modify code in `addon/`
+2. Run `python scripts/syncer.py my_feature > sync_prompt.txt`
+3. Process the prompt with your LLM
+4. Update your specification files with the AI's output
+5. Commit both code and updated specs together
+
+#### Example: Adding a New Feature
+
+```yaml
+# Add to build_manifest.yaml
+features:
+  custom_mesh_tool:
+    description: "Tool for creating custom mesh patterns"
+    spec_files:
+      - specs/features/custom_mesh_tool.md
+    target_files:
+      - addon/mesh_tools.py
+    status: planned
+```
+
+Then use the builder to generate implementation prompts:
+```bash
+python scripts/builder.py custom_mesh_tool | pbcopy  # macOS
+python scripts/builder.py custom_mesh_tool | xclip   # Linux
+```
+
+### Customizing PDD Tools
+
+The provided scripts are templates designed for flexibility:
+- They handle file reading and prompt formatting
+- LLM API integration is left to you (add your preferred API)
+- Customize prompt templates in the scripts as needed
+- Supports any LLM: OpenAI, Anthropic, local models, etc.
 
 ## Customization
 
