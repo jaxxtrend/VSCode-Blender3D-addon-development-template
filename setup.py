@@ -20,7 +20,7 @@ def run_command(command, cwd=None, shell=False):
             cwd=cwd,
             shell=shell,
             capture_output=True,
-            text=True
+            text=True,
         )
         if result.returncode != 0:
             print(f"Error running command: {command}")
@@ -67,17 +67,17 @@ def install_dependencies():
     """Install Python dependencies in the virtual environment"""
     print("Installing dependencies...")
     python_exe = get_venv_python()
-    
+
     if not python_exe.exists():
         print("✗ Virtual environment Python not found")
         return False
-    
+
     if run_command(f"{python_exe} -m pip install --upgrade pip"):
         print("✓ pip upgraded successfully")
     else:
         print("✗ Failed to upgrade pip")
         return False
-    
+
     if run_command(f"{python_exe} -m pip install -r requirements.txt"):
         print("✓ Dependencies installed successfully")
         return True
@@ -89,50 +89,50 @@ def install_dependencies():
 def update_settings_for_platform():
     """Update VS Code settings.json for the current platform"""
     print("Updating VS Code settings for current platform...")
-    
+
     settings_path = Path(".vscode/settings.json")
     if not settings_path.exists():
         print("✗ VS Code settings.json not found")
         return False
-    
+
     try:
-        with open(settings_path, 'r') as f:
+        with open(settings_path, "r") as f:
             content = f.read()
-        
+
         system = platform.system()
         if system in ["Darwin", "Linux"]:  # macOS or Linux
             # Comment out Windows paths and uncomment Unix paths
             content = content.replace(
                 '"python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe", // Windows',
-                '// "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe", // Windows'
+                '// "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe", // Windows',
             )
             content = content.replace(
                 '// "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",     // macOS/Linux',
-                '"python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",     // macOS/Linux'
+                '"python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",     // macOS/Linux',
             )
             content = content.replace(
                 '"${workspaceFolder}/.venv/Lib/site-packages", // Windows path',
-                '// "${workspaceFolder}/.venv/Lib/site-packages", // Windows path'
+                '// "${workspaceFolder}/.venv/Lib/site-packages", // Windows path',
             )
             content = content.replace(
                 '// "${workspaceFolder}/.venv/lib/python3.10/site-packages", // macOS/Linux path (adjust Python version if needed)',
-                '"${workspaceFolder}/.venv/lib/python3.10/site-packages", // macOS/Linux path (adjust Python version if needed)'
+                '"${workspaceFolder}/.venv/lib/python3.10/site-packages", // macOS/Linux path (adjust Python version if needed)',
             )
             content = content.replace(
                 '"path": "${workspaceFolder}/.venv/Scripts/python.exe" // Windows',
-                '// "path": "${workspaceFolder}/.venv/Scripts/python.exe" // Windows'
+                '// "path": "${workspaceFolder}/.venv/Scripts/python.exe" // Windows',
             )
             content = content.replace(
                 '// "path": "${workspaceFolder}/.venv/bin/python"      // macOS/Linux',
-                '"path": "${workspaceFolder}/.venv/bin/python"      // macOS/Linux'
+                '"path": "${workspaceFolder}/.venv/bin/python"      // macOS/Linux',
             )
-        
-        with open(settings_path, 'w') as f:
+
+        with open(settings_path, "w") as f:
             f.write(content)
-        
+
         print("✓ VS Code settings updated for current platform")
         return True
-    
+
     except Exception as e:
         print(f"✗ Failed to update VS Code settings: {e}")
         return False
@@ -140,9 +140,9 @@ def update_settings_for_platform():
 
 def print_next_steps():
     """Print instructions for next steps"""
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("🎉 Setup completed successfully!")
-    print("="*60)
+    print("=" * 60)
     print("\nNext steps:")
     print("1. Install VS Code extensions:")
     print("   - Python (by Microsoft)")
@@ -161,24 +161,24 @@ def print_next_steps():
 def main():
     """Main setup function"""
     print("Blender Add-on Development Template Setup")
-    print("="*40)
-    
+    print("=" * 40)
+
     # Check Python version
     if not check_python():
         sys.exit(1)
-    
+
     # Create virtual environment
     if not create_venv():
         sys.exit(1)
-    
+
     # Install dependencies
     if not install_dependencies():
         sys.exit(1)
-    
+
     # Update settings for platform
     if not update_settings_for_platform():
         sys.exit(1)
-    
+
     # Print next steps
     print_next_steps()
 
